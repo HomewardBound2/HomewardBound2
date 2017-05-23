@@ -8,7 +8,9 @@ const queriesController = require('../controllers/queries');
 
 
 queriesRouter.route('/:userId')
+  .get(queriesController.index)
   .post(queriesController.createQuery)
+
 
 //creates new user
 usersRouter.route('/register')
@@ -20,9 +22,9 @@ usersRouter.route('/login')
 
 
 
-// //shows queries of user
-  // usersRouter.route('/:id')
-  //   .get(sessionController.isLoggedIn, usersController.me)
+//shows queries of user
+usersRouter.route('/:userId')
+  .get(usersController.me)
 
 
 module.exports = {

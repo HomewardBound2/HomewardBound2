@@ -10,7 +10,27 @@ const client = new craigslist.Client({
 
 function index(req, res, next) {
 
+  let newArr = [];
+  User.findById({
+    _id: req.params.userId
+  }, function(err, user) {
+    if (err) return console.log(err)
+  }).populate('queries')
+    .exec((err, user) => {
+      for (let i = 0; i < user.queries.length; i++) {
+        let newObj = {};
+        newObj.maxPrice = user.queries[i].maxPrice
+        newObj.minPrice = user.queries[i].minPrice
+        newObj.searchString = user.queries[i].searchString
+        newArr.push(newObj)
+      }
+      res.json(newArr)
+    })
+    .catch(function(err) {
+      next(err);
+    });
 }
+
 
 function showQueryResults(req, res, next) {
 
@@ -48,7 +68,6 @@ function createQuery(req, res, next) {
       console.log(query)
       listings.forEach((listing) => {
         query.results.push(listing)
-
       })
       query.save(function(err, query) {
         if (err) return conosle.log(err)
@@ -59,5 +78,6 @@ function createQuery(req, res, next) {
 }
 
 module.exports = {
-  createQuery: createQuery
+  createQuery: createQuery,
+  index: index
 }
