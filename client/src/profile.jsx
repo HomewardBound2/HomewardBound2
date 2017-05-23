@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import QueryDetail from './queryDetail.jsx'
+const axios = require('axios');
 
 export default class Profile extends Component {
   constructor(props) {

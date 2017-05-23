@@ -3,6 +3,7 @@ const client = require('twilio')('AC5d6dabce4797b65a544edc775b8858bb', 'c0a502a6
 const userController = {};
 
 userController.createUser = (req, res, next) => {
+    console.log('you are now in createUser')
     User.create(req.body, (err, user) => {
         if (err) return res.send(false);
         else {
@@ -29,7 +30,9 @@ userController.createQuery = (req, res, next) => {
 userController.verifyUser = (req, res, next) => {
   User.findOne({phone: req.body.phone, password: req.body.password}, (err, user) => {
     if (err) throw err;
+    
     else {
+        
         req.body.phone = user.phone;
         req.body._id = user._id;
         next();

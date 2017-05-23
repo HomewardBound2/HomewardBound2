@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const userController = require('cookie-parser');
 
 const routes = require('./config/routes');
 
@@ -41,4 +42,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+
+console.log('running on 3000')
 module.exports = app;

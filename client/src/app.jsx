@@ -25,7 +25,7 @@ class App extends Component {
   registerUser(number, pw) {
     console.log('phone', number, 'password', pw)
     axios
-      .post("/register", { phone: number, password: pw })
+      .post("/api/users/register", { phoneNumber: number, password: pw })
       .then(function (result) {
         if (result.data) {
           //update state (loggedIn) and route to preferences
@@ -49,9 +49,10 @@ class App extends Component {
   logInUser(number, pw) {
     console.log('this', number, pw)
     axios
-      .post("/login", { phone: number, password: pw })
+      .post("/api/users/login", { userName: number, password: pw })
       .then(function (result) {
-        if (result.data) {
+        console.log('result data:',result)
+        if (result.data.success ) {
           let newState = Object.assign({}, this.state, { loggedIn: "true", number: number, page: "prof" })
           this.setState(newState);
         }
