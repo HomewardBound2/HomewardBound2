@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "gulp": "node_modules/.bin/gulp",
-    "start": "node ./server/server.js",
+    "start": "nodemon server/bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "jest": {
@@ -24,7 +24,10 @@
     "express": "^4.15.3",
     "gulp": "^3.9.0",
     "gulp-notify": "^2.2.0",
+    "logger": "0.0.1",
     "mongoose": "^4.10.0",
+    "mongoose-bcrypt": "^1.4.2",
+    "morgan": "^1.8.1",
     "node-craigslist": "^1.1.1",
     "node-schedule": "^1.2.1",
     "nodemon": "^1.11.0",
