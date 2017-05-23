@@ -25,7 +25,7 @@ function create(req, res, next) {
 
 function me(req, res, next) {
   User.findOne({
-    _id: req.params.id
+    _id: req.params._id
   })
     .populate('queries')
     .exec((err, user) => {
