@@ -9,7 +9,6 @@ const client = new craigslist.Client({
 
 
 function index(req, res, next) {
-
   let newArr = [];
   User.findById({
     _id: req.params.userId
@@ -33,14 +32,15 @@ function index(req, res, next) {
 
 
 function showQueryResults(req, res, next) {
-
+  Query.findOne({
+    _id: req.params.queryId
+  }, function(err, query) {
+    if (err) return console.log(err)
+    res.json(query.results)
+  })
 }
 
 function deleteQuery(req, res, next) {
-
-}
-
-function updateQuery(req, res, next) {
 
 }
 
@@ -79,5 +79,6 @@ function createQuery(req, res, next) {
 
 module.exports = {
   createQuery: createQuery,
-  index: index
+  index: index,
+  showQueryResults: showQueryResults
 }

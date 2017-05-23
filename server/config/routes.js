@@ -11,6 +11,8 @@ queriesRouter.route('/:userId')
   .get(queriesController.index)
   .post(queriesController.createQuery)
 
+queriesRouter.route('/:userId/:queryId')
+  .get(queriesController.showQueryResults)
 
 //creates new user
 usersRouter.route('/register')
