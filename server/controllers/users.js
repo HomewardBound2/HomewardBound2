@@ -39,7 +39,7 @@ function me(req, res, next) {
 //compare hashed passwords
 function verifyUser(req, res, next) {
   User.findOne({
-    userName: req.body.userName
+    phoneNumber: req.body.phoneNumber
   }, function(err, user) {
     if (err || !user) {
       console.log(user)
