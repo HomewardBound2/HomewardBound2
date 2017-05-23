@@ -14,7 +14,11 @@ const querySchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  results: [resultSchema]
+  searchString: {
+    type: String,
+    required: true
+  },
+  results: []
 })
 
 

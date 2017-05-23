@@ -2,40 +2,28 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const resultSchema = new mongoose.Schema({
-  description: {
+  category: {
     type: String
   },
-  mapUrl: {
+  date: {
+    type: String
+  },
+  hasPic: {
+    type: Boolean
+  },
+  location: {
     type: String
   },
   pid: {
     type: String
   },
-  replyUrl: {
+  price: {
     type: String
   },
   title: {
     type: String
   },
   url: {
-    type: String
-  },
-  postedAt: {
-    type: Date
-  },
-  updatedAt: {
-    type: Date
-  },
-  images: {
-    type: [String]
-  },
-  contactName: {
-    type: Number
-  },
-  phoneNumber: {
-    type: Number
-  },
-  email: {
     type: String
   }
 })
