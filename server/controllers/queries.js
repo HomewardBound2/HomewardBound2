@@ -43,7 +43,16 @@ function showQueryResults(req, res, next) {
 }
 
 function deleteQuery(req, res, next) {
+  User.findOne({
+    _id: req.params.userId
+  }, function(err, user) {
+    user.queries.remove(req.params.queryId)
+    user.save(function(err, user) {
+      if (err) res.send(err)
+      res.json(user)
+    })
 
+  })
 }
 
 
@@ -82,5 +91,6 @@ function createQuery(req, res, next) {
 module.exports = {
   createQuery: createQuery,
   index: index,
-  showQueryResults: showQueryResults
+  showQueryResults: showQueryResults,
+  deleteQuery: deleteQuery
 }

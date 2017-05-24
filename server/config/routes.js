@@ -11,26 +11,17 @@ queriesRouter.route('/:userId')
   .get(queriesController.index)
   .post(queriesController.createQuery)
 
+
 queriesRouter.route('/:userId/:queryId')
   .get(queriesController.showQueryResults)
+  .delete(queriesController.deleteQuery)
+
 
 //creates new user
 usersRouter.route('/register')
   .post(usersController.create)
 
-
-usersRouter.route('/login')
-  .post(usersController.verifyUser, queriesController.index)
-
-
-
-//shows queries of user
-usersRouter.route('/:userId')
-  .get(usersController.me)
-
-
 module.exports = {
   users: usersRouter,
-  queries: queriesRouter,
-
+  queries: queriesRouter
 }
