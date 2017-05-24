@@ -5,6 +5,8 @@ import Preferences from './preferences.jsx'
 import Profile from './profile.jsx'
 import QueryDetail from './queryDetail.jsx'
 import Signup from './signup.jsx'
+import Results from './results.jsx'
+
 const axios = require('axios');
 
 class App extends Component {
@@ -20,6 +22,7 @@ class App extends Component {
     this.redirectToRegister = this.redirectToRegister.bind(this)
     this.logInUser = this.logInUser.bind(this)
     this.createQuery = this.createQuery.bind(this)
+    this.getResults = this.getResults.bind(this)
   }
 
   registerUser(number, pw) {
@@ -41,7 +44,7 @@ class App extends Component {
       }.bind(this))
   }
 
-  redirectToRegister(){
+  redirectToRegister() {
     let newState = Object.assign({}, this.state, { loggedIn: "true", page: "reg" })
     this.setState(newState)
   }
@@ -49,12 +52,13 @@ class App extends Component {
   logInUser(number, pw) {
     console.log('this', number, pw)
     axios
-      .post("/api/users/login", { userName: number, password: pw })
+      .post("/api/users/login", { phoneNumber: number, password: pw })
       .then(function (result) {
-        console.log('result data:',result)
-        if (result.data.success ) {
-          let newState = Object.assign({}, this.state, { loggedIn: "true", number: number, page: "prof" })
+        console.log('result data:', result)
+        if (result.data) {
+          let newState = Object.assign({}, this.state, { loggedIn: "true", number: number, page: "prof", userQueries: result.data.resultsArr, userId: result.data.userId })
           this.setState(newState);
+          console.log('this is the state', this.state)
         }
         else {
           //show an error (Error: please retry)
@@ -64,9 +68,10 @@ class App extends Component {
       }.bind(this))
   }
 
-    createQuery(city, cat,search,min,max,zip) {
+  createQuery(minPrice, maxPrice, searchString) {
+    console.log('Im in createQuery request', minPrice, maxPrice, searchString, this.state.userId)
     axios
-      .post("/createquery", {city, cat, search, min, max, zip })
+      .post("/api/queries/" + this.state.userId, { minPrice, maxPrice, searchString })
       .then(function (result) {
         if (result.data) {
           let newState = Object.assign({}, this.state, { loggedIn: "true", number: number, page: "pref" })
@@ -80,14 +85,34 @@ class App extends Component {
       }.bind(this))
   }
 
+  getResults(qId) {
+    console.log('this is the qid ', qId)
+
+    axios
+      .get("/api/queries/" + this.state.userId + '/' + qId)
+      .then(function(result) {
+        if (result.data) {
+          let newState = Object.assign({}, this.state, { listings: result.data, page: "results" })
+          this.setState(newState);
+          console.log('this is the new state lmao ', this.state)
+        }
+        else {
+          //show an error (Error: please retry)
+          let newState = Object.assign({}, this.state, { loginError: 'visible' })
+          this.setState(newState);
+        }
+      }.bind(this))
+  }
+
 
   render() {
     let pageToRender;
-  if (this.state.loggedIn && this.state.page === "prof") { console.log('1'); pageToRender = <Profile number={this.state.number}/> }
-    else if (this.state.loggedIn && this.state.page === "reg") { console.log('1'); pageToRender = <Signup register={this.registerUser.bind(this)} umber={this.state.number}/> }
+    if (this.state.loggedIn && this.state.page === "prof") { console.log('1'); pageToRender = <Profile number={this.state.number} userQueries={this.state.userQueries} query={this.createQuery} getResults={this.getResults} /> }
+    else if (this.state.loggedIn && this.state.page === "reg") { console.log('3'); pageToRender = <Signup register={this.registerUser.bind(this)} umber={this.state.number} /> }
     // if (this.state.loggedIn && this.state.page === "prof") { console.log('1'); pageToRender = <QueryDetail/> }
-    else if (this.state.loggedIn && this.state.page === "pref") { console.log('2'); pageToRender = <Preferences query={this.createQuery}/> }
-    else { console.log(this.state); pageToRender = <Login error={this.state.loginError} register={this.registerUser.bind(this)} login={this.logInUser.bind(this)} redirectToRegister={this.redirectToRegister.bind(this)}/> }
+    else if (this.state.loggedIn && this.state.page === "pref") { console.log('2'); pageToRender = <Preferences query={this.createQuery} /> }
+    else if (this.state.loggedIn && this.state.page === "results") { console.log('4'); pageToRender = <Results /> }
+    else { console.log(this.state); pageToRender = <Login error={this.state.loginError} register={this.registerUser.bind(this)} login={this.logInUser.bind(this)} redirectToRegister={this.redirectToRegister.bind(this)} /> }
     return (
       <div id="App">
         {pageToRender}

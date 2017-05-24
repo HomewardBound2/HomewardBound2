@@ -51,12 +51,14 @@ function verifyUser(req, res, next) {
       })
     } else {
       if (user.verifyPasswordSync(req.body.password)) {
-        console.log('verified')
+        console.log('verified!!!!!!!', req.body)
         req._id = user._id
-        res.status(200);
-        res.json({success: true})
-        // next()
+        req.body._id = user._id
+        // res.status(200);
+        // res.json({success: true})
+        next()
       } else {
+        console.log('NOT IN HERE')
         res.json({
           success: false
         })

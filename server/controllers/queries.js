@@ -36,9 +36,10 @@ new CronJob('* * * * * *', function() {
 
 
 function index(req, res, next) {
+  console.log('im in INDEX!!!!')
   let newArr = [];
   User.findById({
-    _id: req.params.userId
+    _id: req.body._id
   }, function(err, user) {
     if (err) return console.log(err)
   }).populate('queries')
@@ -51,7 +52,7 @@ function index(req, res, next) {
         newObj.searchString = user.queries[i].searchString
         newArr.push(newObj)
       }
-      res.json(newArr)
+      res.json({userId: req.body._id , resultsArr : newArr})
     })
     .catch(function(err) {
       next(err);
