@@ -2,10 +2,37 @@ const Query = require('../models/Query');
 const User = require('../models/User');
 const Result = require('../models/Result')
 const mongoose = require('mongoose')
+const CronJob = require('cron').CronJob;
 const craigslist = require('node-craigslist');
+const cursor = User.find().cursor();
 const client = new craigslist.Client({
   city: 'losangeles'
 });
+
+
+//will run every 30 minutes
+new CronJob('* * * * * *', function() {
+
+
+
+  cursor.on('data', function(doc) {
+    console.log(doc)
+  // do something with the mongoose document
+  }).on('error', function(err) {
+    // handle the error
+  })
+  //submit existing query params to craigslist scraper - FOR ALL EXISTING QUERIES
+
+
+  //check if there are new listings that aren't saved in Database
+  //store newly retreived listings in array to be sent to user via text-message (or alert that there are new results)
+  //add new listings query results
+
+  console.log('running every second')
+
+
+
+}, null, true, 'America/Los_Angeles');
 
 
 function index(req, res, next) {
@@ -31,7 +58,6 @@ function index(req, res, next) {
     });
 }
 
-
 function showQueryResults(req, res, next) {
   Query.findOne({
     _id: req.params.queryId
@@ -48,12 +74,11 @@ function deleteQuery(req, res, next) {
     user.queries.remove(req.params.queryId)
     user.save(function(err, user) {
       if (err) res.send(err)
-      res.json(user)
+      res.json(user.queries)
     })
 
   })
 }
-
 
 function createQuery(req, res, next) {
   let options = {
@@ -75,7 +100,6 @@ function createQuery(req, res, next) {
   })
   Query.findOne(req.body, function(err, query) {
     client.search(options, req.body.searchString).then((listings) => {
-      console.log(query)
       listings.forEach((listing) => {
         query.results.push(listing)
       })
