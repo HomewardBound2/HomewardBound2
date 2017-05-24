@@ -20,7 +20,7 @@ usersRouter.route('/register')
 
 
 usersRouter.route('/login')
-  .post(usersController.verifyUser)
+  .post(usersController.verifyUser, queriesController.index)
 
 
 
