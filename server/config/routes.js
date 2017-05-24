@@ -21,6 +21,9 @@ queriesRouter.route('/:userId/:queryId')
 usersRouter.route('/register')
   .post(usersController.create)
 
+usersRouter.route('/login')
+  .post(usersController.verifyUser, queriesController.index)
+
 module.exports = {
   users: usersRouter,
   queries: queriesRouter
