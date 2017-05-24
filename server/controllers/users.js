@@ -1,8 +1,6 @@
 const User = require('../models/User');
 
 function create(req, res, next) {
-  console.log('getting in here')
-  console.log('reqqqq bodddyyyy',req.body)
   if (!req.body.phoneNumber) {
     return res.status(422).send('Missing required fields');
   }
@@ -40,7 +38,7 @@ function me(req, res, next) {
 
 //compare hashed passwords
 function verifyUser(req, res, next) {
-  console.log('the body ',req.body)
+  console.log('the body ', req.body)
   User.findOne({
     phoneNumber: req.body.phoneNumber
   }, function(err, user) {
@@ -51,14 +49,13 @@ function verifyUser(req, res, next) {
       })
     } else {
       if (user.verifyPasswordSync(req.body.password)) {
-        console.log('verified!!!!!!!', req.body)
+
         req._id = user._id
         req.body._id = user._id
         // res.status(200);
         // res.json({success: true})
         next()
       } else {
-        console.log('NOT IN HERE')
         res.json({
           success: false
         })

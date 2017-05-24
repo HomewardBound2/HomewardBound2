@@ -10,36 +10,10 @@ const client = new craigslist.Client({
 });
 
 
-//will run every 30 minutes
-new CronJob('* * * * * *', function() {
-
-
-
-  cursor.on('data', function(doc) {
-    console.log(doc)
-  // do something with the mongoose document
-  }).on('error', function(err) {
-    // handle the error
-  })
-  //submit existing query params to craigslist scraper - FOR ALL EXISTING QUERIES
-
-
-  //check if there are new listings that aren't saved in Database
-  //store newly retreived listings in array to be sent to user via text-message (or alert that there are new results)
-  //add new listings query results
-
-  console.log('running every second')
-
-
-
-}, null, true, 'America/Los_Angeles');
-
-
 function index(req, res, next) {
-  console.log('im in INDEX!!!!')
   let newArr = [];
   User.findById({
-    _id: req.body._id
+    _id: req.params.userId
   }, function(err, user) {
     if (err) return console.log(err)
   }).populate('queries')
@@ -52,7 +26,7 @@ function index(req, res, next) {
         newObj.searchString = user.queries[i].searchString
         newArr.push(newObj)
       }
-      res.json({userId: req.body._id , resultsArr : newArr})
+      res.json(newArr)
     })
     .catch(function(err) {
       next(err);
