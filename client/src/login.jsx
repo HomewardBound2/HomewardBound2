@@ -31,11 +31,11 @@ export default class Login extends Component {
           </label>
           <pre />
           <label>
-            <input type="password" name="password" placeholder="Password" value={this.password} onChange={this.handlePwChange} />
+            <input type="password" name="password" placeholder="Password" value={this.pw} onChange={this.handlePwChange} />
           </label>
           <pre />
           <input className="signInButton" type="submit" value="LogIn" onClick={()=>this.props.login(this.number, this.pw)}  />
-          <input className="signInButton" type="submit" value="Register" onClick={()=>this.props.register(this.number, this.pw)} />
+          <input className="signInButton" type="submit" value="Register" onClick={this.props.redirectToRegister} />
         </div>
         <div style={errStyle}><p id="errorMsg"> Please provide valid number and password</p></div>
       </div>
@@ -43,17 +43,3 @@ export default class Login extends Component {
   }
 }
 
-/*class Box extends Component {
-  render() {
-    let styles = {
-      color: "blue",
-      height: 100,
-      width: 100,
-      fontSize: 30
-    }
-    return (
-      <button id={this.props.boxID} style={styles} onClick={this.props.onClick}> {this.props.letter[this.props.boxID]}
-      </button>
-    )
-  }
-}*/

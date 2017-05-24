@@ -18,9 +18,8 @@ queriesRouter.route('/:userId/:queryId')
 
 
 //creates new user
-usersRouter.route('/')
+usersRouter.route('/register')
   .post(usersController.create)
-
 
 module.exports = {
   users: usersRouter,
