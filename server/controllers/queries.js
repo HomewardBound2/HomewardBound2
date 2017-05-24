@@ -18,6 +18,7 @@ function index(req, res, next) {
     .exec((err, user) => {
       for (let i = 0; i < user.queries.length; i++) {
         let newObj = {};
+        newObj._id = user.queries[i]._id
         newObj.maxPrice = user.queries[i].maxPrice
         newObj.minPrice = user.queries[i].minPrice
         newObj.searchString = user.queries[i].searchString
@@ -41,7 +42,16 @@ function showQueryResults(req, res, next) {
 }
 
 function deleteQuery(req, res, next) {
+  User.findOne({
+    _id: req.params.userId
+  }, function(err, user) {
+    user.queries.remove(req.params.queryId)
+    user.save(function(err, user) {
+      if (err) res.send(err)
+      res.json(user)
+    })
 
+  })
 }
 
 
@@ -80,5 +90,6 @@ function createQuery(req, res, next) {
 module.exports = {
   createQuery: createQuery,
   index: index,
-  showQueryResults: showQueryResults
+  showQueryResults: showQueryResults,
+  deleteQuery: deleteQuery
 }
