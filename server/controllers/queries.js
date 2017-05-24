@@ -25,13 +25,15 @@ function index(req, res, next) {
         newObj.searchString = user.queries[i].searchString
         newArr.push(newObj)
       }
-      res.json({userId: req.body._id , resultsArr : newArr})
+      res.json({
+        userId: req.body._id,
+        resultsArr: newArr
+      })
     })
     .catch(function(err) {
       next(err);
     });
 }
-
 
 function showQueryResults(req, res, next) {
   Query.findOne({
