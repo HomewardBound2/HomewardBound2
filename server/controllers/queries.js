@@ -2,18 +2,17 @@ const Query = require('../models/Query');
 const User = require('../models/User');
 const Result = require('../models/Result')
 const mongoose = require('mongoose')
-const CronJob = require('cron').CronJob;
 const craigslist = require('node-craigslist');
-const cursor = User.find().cursor();
 const client = new craigslist.Client({
   city: 'losangeles'
 });
 
 
 function index(req, res, next) {
+  console.log('im in INDEX!!!!')
   let newArr = [];
   User.findById({
-    _id: req.params.userId
+    _id: req.body._id
   }, function(err, user) {
     if (err) return console.log(err)
   }).populate('queries')
@@ -26,7 +25,10 @@ function index(req, res, next) {
         newObj.searchString = user.queries[i].searchString
         newArr.push(newObj)
       }
-      res.json(newArr)
+      res.json({
+        userId: req.body._id,
+        resultsArr: newArr
+      })
     })
     .catch(function(err) {
       next(err);
@@ -49,11 +51,12 @@ function deleteQuery(req, res, next) {
     user.queries.remove(req.params.queryId)
     user.save(function(err, user) {
       if (err) res.send(err)
-      res.json(user.queries)
+      res.json(user)
     })
 
   })
 }
+
 
 function createQuery(req, res, next) {
   let options = {
@@ -75,6 +78,7 @@ function createQuery(req, res, next) {
   })
   Query.findOne(req.body, function(err, query) {
     client.search(options, req.body.searchString).then((listings) => {
+      console.log(query)
       listings.forEach((listing) => {
         query.results.push(listing)
       })
