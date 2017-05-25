@@ -25,7 +25,9 @@ export default class Profile extends Component {
     axios.get(`profile/`)
       .then((response) => {
         console.log(response.data);
-        this.setState({ queryList: response.data });
+        this.setState({
+          queryList: response.data
+        });
       });
   }
 
@@ -71,7 +73,7 @@ export default class Profile extends Component {
     let newObj = this.props.userQueries.map((curr, i) => {
       return (
         <div>
-          <a onClick= {()=>this.props.getResults(curr._id)} href = "#" >This is the Max Price -->{curr.maxPrice}  This is the Min Price -->{curr.minPrice}  Under the search term -->{curr.searchString}</a>
+          <a onClick= {() => this.props.getResults(curr._id)} href = "#" >This is the Max Price -->{curr.maxPrice}  This is the Min Price -->{curr.minPrice}  Under the search term -->{curr.searchString}</a>
         </div>
       )
     })
@@ -91,13 +93,14 @@ export default class Profile extends Component {
         <br />
         <input name="search" placeholder="Search by..." value={this.search} onChange={this.handleSearchChange} />
         <br />
+
         <button onClick={()=> this.props.query(this.minPrice, this.maxPrice, this.searchString)}>Create New Query</button>
         <br />
         <p>Enter your phone number to send SMS to :</p>
         <input name="phoneNumber" placeholder="+12223334444" value={this.state.recipient} onChange={this.handlePhoneNumber}/>
         <button onClick={()=>this.sendSms(this.state.recipient)}>SendSMS</button>
+        <button onClick={() => this.props.query(this.minPrice, this.maxPrice, this.searchString)}>Create New Query</button>
       </div>
     )
   }
 }
-

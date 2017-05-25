@@ -9,11 +9,15 @@ h2{
   font-size: 30pt;
   font-family: Nanum Pen Script;
 }
+#logo{
+  text-align: center;
+}
 #Login{
   height: 100px;
   margin: 20% 0 10%;
 }
 #LoginForm{
+  justify-content: center;
   text-align: center;
   max-width: 30%;
   padding: 20px;

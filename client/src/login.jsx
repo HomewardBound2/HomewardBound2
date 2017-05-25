@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-const axios = require('axios');
+import axios from 'axios'
+import { Input, Button, Card, Icon } from 'semantic-ui-react'
+
 
 
 export default class Login extends Component {
@@ -22,24 +24,30 @@ export default class Login extends Component {
     this.pw = event.target.value;
   }
   render() {
-    let errStyle = {visibility:this.props.error};
+    let errStyle = {
+      visibility: this.props.error
+    };
     return (
       <div id="Login">
         <div id="LoginForm">
+          <Card>
+            <Card.Content header='Homeward Bound' />
+            <Card.Content extra>
           <label>
-            <input type="tel" name="phone" placeholder="Phone Number" value={this.number} onChange={this.handleNumberChange} minLength="10" maxLength="10" />
+            <Input icon='phone' type="tel" name="phone" placeholder="Phone Number" value={this.number} onChange={this.handleNumberChange} minLength="10" maxLength="10" />
           </label>
           <pre />
           <label>
-            <input type="password" name="password" placeholder="Password" value={this.pw} onChange={this.handlePwChange} />
+            <Input icon="privacy" type="password" name="password" placeholder="Password" value={this.pw} onChange={this.handlePwChange} />
           </label>
           <pre />
-          <input className="signInButton" type="submit" value="LogIn" onClick={()=>this.props.login(this.number, this.pw)}  />
-          <input className="signInButton" type="submit" value="Register" onClick={this.props.redirectToRegister} />
+          <Button className="signInButton" type="submit" value="LogIn" onClick={() => this.props.login(this.number, this.pw)}>Log In</Button>
+          <Button className="signInButton" type="submit" value="Register" onClick={this.props.redirectToRegister}>Sign Up</Button>
+          </Card.Content>
+          </Card>
         </div>
         <div style={errStyle}><p id="errorMsg"> Please provide valid number and password</p></div>
       </div>
     )
   }
 }
-
