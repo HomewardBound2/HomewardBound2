@@ -9,7 +9,6 @@ const client = new craigslist.Client({
 
 
 function index(req, res, next) {
-  console.log('im in INDEX!!!!')
   let newArr = [];
   User.findById({
     _id: req.body._id
@@ -76,14 +75,16 @@ function createQuery(req, res, next) {
       })
     })
   })
+
+
   Query.findOne(req.body, function(err, query) {
+    if (err) return console.log(err)
     client.search(options, req.body.searchString).then((listings) => {
-      console.log(query)
       listings.forEach((listing) => {
         query.results.push(listing)
       })
       query.save(function(err, query) {
-        if (err) return conosle.log(err)
+        if (err) return console.log(err)
         res.json(query)
       })
     })

@@ -38,6 +38,7 @@
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "request": "^2.81.0",
+    "semantic-ui-react": "^0.68.3",
     "twilio": "^3.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.2"
