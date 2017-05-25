@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   registerUser(number, pw) {
-    console.log('phone', number, 'password', pw)
+
     axios
       .post("/api/users/register", {
         phoneNumber: number,
@@ -61,7 +61,6 @@ class App extends Component {
   }
 
   logInUser(number, pw) {
-    console.log('this', number, pw)
     axios
       .post("/api/users/login", {
         phoneNumber: number,
@@ -78,7 +77,6 @@ class App extends Component {
             userId: result.data.userId
           })
           this.setState(newState);
-          console.log('this is the state', this.state)
         } else {
           //show an error (Error: please retry)
           let newState = Object.assign({}, this.state, {
@@ -90,18 +88,18 @@ class App extends Component {
   }
 
   createQuery(minPrice, maxPrice, searchString) {
-    console.log('Im in createQuery request', minPrice, maxPrice, searchString, this.state.userId)
     axios
       .post("/api/queries/" + this.state.userId, {
-        minPrice,
-        maxPrice,
-        searchString
+        maxPrice: +this.state.maxPrice,
+        minPrice: +this.state.minPrice,
+        searchString: this.state.searchString
       })
       .then(function(result) {
+        console.log('result: ', result)
         if (result.data) {
           let newState = Object.assign({}, this.state, {
             loggedIn: "true",
-            number: number,
+            // number: number,
             page: "pref"
           })
           this.setState(newState);
@@ -112,12 +110,10 @@ class App extends Component {
           })
           this.setState(newState);
         }
-      }.bind(this))
+      })
   }
 
   getResults(qId) {
-    console.log('this is the qid ', qId)
-
     axios
       .get("/api/queries/" + this.state.userId + '/' + qId)
       .then(function(result) {
@@ -127,7 +123,6 @@ class App extends Component {
             page: "results"
           })
           this.setState(newState);
-          console.log('this is the new state lmao ', this.state)
         } else {
           //show an error (Error: please retry)
           let newState = Object.assign({}, this.state, {
