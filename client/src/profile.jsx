@@ -7,13 +7,17 @@ export default class Profile extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      recipient: null
+    };
     let minPrice = null;
     let maxPrice = null;
     let searchString = null;
+    let newQueries = null;
     this.handleMinChange = this.handleMinChange.bind(this);
     this.handleMaxChange = this.handleMaxChange.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handlePhoneNumber = this.handlePhoneNumber.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +39,33 @@ export default class Profile extends Component {
   }
   handleSearchChange(event) {
     this.searchString = event.target.value;
+  }
+  handlePhoneNumber(event) {
+    this.state.recipient = event.target.value;
+  }
+
+  // newQueries = this.props.userQueries.map((curr, i) => {
+  //   curr.maxPrice + curr.minPrice + curr.searchString
+  // })
+
+  sendSms(recipient) {
+    let string;
+    console.log('sendSMMMMSSSSSS',this.props.userQueries) //array of objects 
+    for (let i=0; i<this.props.userQueries.length; i++){
+      console.log('22222', this.props.userQueries[1])
+      for (let key in this.props.userQueries[i]){
+        if (key !== '_id'){
+        console.log('33333', key)
+        string += this.props.userQueries[i][key]+'\n'
+        console.log('strrriiinnnggggg!!', string)
+        }
+      }
+    }
+    axios
+      .post('/sendsms', {recipient: this.state.recipient, data: string})
+      .then((response) => {
+        this.setState({recipient: this.state.recipient})
+      })
   }
 
   render() {
@@ -62,6 +93,12 @@ export default class Profile extends Component {
         <br />
         <input name="search" placeholder="Search by..." value={this.search} onChange={this.handleSearchChange} />
         <br />
+
+        <button onClick={()=> this.props.query(this.minPrice, this.maxPrice, this.searchString)}>Create New Query</button>
+        <br />
+        <p>Enter your phone number to send SMS to :</p>
+        <input name="phoneNumber" placeholder="+12223334444" value={this.state.recipient} onChange={this.handlePhoneNumber}/>
+        <button onClick={()=>this.sendSms(this.state.recipient)}>SendSMS</button>
         <button onClick={() => this.props.query(this.minPrice, this.maxPrice, this.searchString)}>Create New Query</button>
       </div>
     )
